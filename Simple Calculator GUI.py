@@ -180,8 +180,7 @@ class TheGrid(Widget):
             lst = ['+','-','*','/']
             a = list(self.ans.text)[::-1]
             b = list(self.ans.text)
-            #if self.ans.text[-1] in lst:
-                #self.ans.text += '(-'
+	
             for i in lst:
                 if i in self.ans.text:
                     for j in a:
