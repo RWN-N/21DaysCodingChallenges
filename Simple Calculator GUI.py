@@ -2,11 +2,20 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.config import Config
 from kivy.lang import Builder
+from kivy.properties import StringProperty,ObjectProperty
+from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
 
 Config.set('graphics','width','400')
 Config.set('graphics','height','600')
 
-Builder.load_string("""
+historypys = ''
+
+class P(Popup):
+    text = StringProperty('')
+
+Builder.load_string('''
+
 <TheGrid>:
 	ans : inputs
 	totalsum : total
@@ -43,8 +52,8 @@ Builder.load_string("""
 					root.brackets()
 				
 			Button:
-				text:'Delete'
-				font_size : 20
+				text:'DEL'
+				font_size : 30
 				on_release:
 					root.backspace()
 					
@@ -144,22 +153,68 @@ Builder.load_string("""
 				on_release:
 					inputs.text += self.text
 				
+					
 			Button:
 				text:'='
 				font_size : 40
 				on_release:
 					root.strsum(inputs.text)
-				
-				
-""")
+	
+		Button:
+			text:'History'
+			font_size : 40
+			size_hint: 0.15,0.15
+			on_release:
+				root.historybtn()
+		
+
+
+<P>:
+	title: 'History'
+	auto_dismiss : False
+	size_hint:(None,None)
+	size:(300,300)
+	BoxLayout:
+		orientation:'vertical'
+		ScrollView:
+			Label:
+				text : root.text
+				text_size: self.width,None
+				height : self.texture_size[1]
+				font_size : 20
+				size_hint:1,None
+		BoxLayout:
+			Button:
+				text: 'Close'
+				size_hint:(None,None)
+				size:100,90
+				on_release:
+					root.dismiss()
+			Label:
+				text:''
+				size:100,90
+			Button:
+				text: 'Clear History'
+				size_hint:(None,None)
+				size : 100,90
+				on_release:
+					root.text = ''	
+	    	    	    							    
+''')
 
 class TheGrid(Widget):
     def strsum(self,anss):
+        global historypys
         if self.ans:
             try:
                 self.totalsum.text = str(round(eval(anss),ndigits=5))
             except:
                 self.totalsum.text = 'Error'
+
+            if self.totalsum.text != 'Error':
+                historypys += f'>>> {anss} = {self.totalsum.text}\n'
+                
+                
     def backspace(self):
         try:
             self.ans.text = self.ans.text[:len(self.ans.text)-1]
@@ -180,7 +235,7 @@ class TheGrid(Widget):
             lst = ['+','-','*','/']
             a = list(self.ans.text)[::-1]
             b = list(self.ans.text)
-	
+            
             for i in lst:
                 if i in self.ans.text:
                     for j in a:
@@ -194,12 +249,15 @@ class TheGrid(Widget):
                 self.ans.text = (self.ans.text[::-1]+'-(')[::-1]
         except:
             pass
-                
+    def historybtn(self):
+        showing = P()
+        showing.text = historypys
+        showing.open()
 
-class CalculatorApp(App):
+class SimpleCalculatorApp(App):
     def build(self):
         return TheGrid()
 
 
 if __name__ =='__main__':
-    CalculatorApp().run()
+    SimpleCalculatorApp().run()
