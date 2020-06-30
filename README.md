@@ -1,2 +1,2 @@
 #21DaysCodingChallenges
-My Solution base on Challenges From Discord Server
+My Solution based on Challenges From Discord Server
