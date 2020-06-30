@@ -96,7 +96,7 @@ class DecodeWindow(Screen):
         dinlist = [din[i:i+2]
                    for i in range(0,len(din),2)]
         try:
-            if len(din)%2==0 and len(din)!=0 and '' not in din:
+            if len(din)%2==0 and len(din)!=0:
                 for i in dinlist:
                     self.dout.text += decodedan[encodedan.index(i)].upper()
             else:
