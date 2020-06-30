@@ -1,0 +1,274 @@
+WindowManager:
+	MainWindow:
+	EncodeWindow:
+	DecodeWindow:
+	
+<MainWindow>:
+	name : 'main'
+	FloatLayout:
+		Label:
+			text:'The Cracker'
+			font_size :100
+			size_hint: None,None
+			pos : 0,375
+			size : 800,200
+			
+		Button:
+			text:'Encoding \nMessage'
+			size_hint: None,None
+			font_size :40
+			size : 350,125
+			pos : 45,225
+			on_release: 
+				app.root.current = 'encode'
+				root.manager.transition.direction = "right"
+
+		Button:
+			text:'Decoding \nMessage'
+			size_hint: None,None
+			font_size :40
+			size : 350,125
+			pos : 405,225
+			on_release: 
+				app.root.current = 'decode'
+				root.manager.transition.direction = "left"
+			
+		Button:
+			text:'Both History'
+			size_hint: None,None
+			font_size :45
+			size : 300,100
+			pos : 250,115
+			on_release: root.mhistorybtn()
+				
+		Button:
+			text:'Exit'
+			size_hint: None,None
+			font_size :45
+			size : 100,75
+			pos : 350,30
+			on_release: app.stop()
+			
+<EncodeWindow>:
+	ein:emasuk
+	eout:ekeluar
+	name:'encode'
+	FloatLayout:
+		Label:
+			text : 'Encoding Feature'
+			size_hint:None,None
+			font_size:65
+			size : 800,100
+			pos : 0,480
+		Label:
+			text : 'Text Input'
+			size_hint:None,None
+			font_size:20
+			size : 100,40
+			pos : 5,425 
+		Label:
+			text : 'Encoded Text'
+			size_hint:None,None
+			font_size:20
+			size : 100,40
+			pos : 450,425 
+		Label:
+			text: '=>'
+			size_hint:None,None
+			font_size:30
+			size : 75,70
+			pos : 365,275
+		TextInput:
+			id : emasuk
+			size_hint:None,None
+			multiline:True
+			font_size:20
+			size : 350,300
+			pos : 10,125
+		TextInput:
+			id : ekeluar
+			size_hint:None,None
+			multiline:True
+			font_size:20
+			size : 350,300
+			pos : 440,125 
+		Button:
+			text : 'Encode'
+			size_hint:None,None
+			font_size:15
+			size : 60,25
+			pos : 10,100
+			on_release: root.encoding()
+		BoxLayout:
+			size_hint:None,None
+			font_size:45
+			size : 500,50
+			pos : 150,10
+			Button:
+				text:'Back'
+				on_release:
+					app.root.current = 'main'
+					root.manager.transition.direction = "left"
+			Button:
+				text:'Encoding\nHistory'
+				on_release: root.ehistorybtn()
+			Button:
+				text:'Clear'
+				on_release: 
+					emasuk.text = ''
+					ekeluar.text = ''
+	
+<DecodeWindow>:
+	name:'decode'
+	din:dmasuk
+	dout:dkeluar
+	FloatLayout:
+		Label:
+			text : 'Decoding Feature'
+			size_hint:None,None
+			font_size:65
+			size : 800,100
+			pos : 0,480
+		Label:
+			text : 'Encoded Text'
+			size_hint:None,None
+			font_size:20
+			size : 100,40
+			pos : 20,425 
+		Label:
+			text : 'Decoded Text'
+			size_hint:None,None
+			font_size:20
+			size : 100,40
+			pos : 450,425 
+		Label:
+			text: '=>'
+			size_hint:None,None
+			font_size:30
+			size : 75,70
+			pos : 365,275
+		TextInput:
+			id : dmasuk
+			size_hint:None,None
+			multiline:True
+			font_size:20
+			size : 350,300
+			pos : 10,125
+		TextInput:
+			id : dkeluar
+			size_hint:None,None
+			multiline:True
+			font_size:20
+			size : 350,300
+			pos : 440,125 
+		Button:
+			text : 'Decode'
+			size_hint:None,None
+			font_size:15
+			size : 60,25
+			pos : 10,100
+			on_release: root.decoding()
+		BoxLayout:
+			size_hint:None,None
+			font_size:45
+			size : 500,50
+			pos : 150,10
+			Button:
+				text:'Back'
+				on_release:
+					app.root.current = 'main'
+					root.manager.transition.direction = "right"
+			Button:
+				text:'Decoding\nHistory'
+				on_release: root.dhistorybtn()
+			Button:
+				text:'Clear'
+				on_release: 
+					dmasuk.text = ''
+					dkeluar.text = ''
+	
+	
+	
+<P>:
+	title: 'History'
+	auto_dismiss : False
+	size_hint:(None,None)
+	size:(450,300)
+	BoxLayout:
+		orientation:'vertical'
+		ScrollView:
+			Label:
+				text : root.text
+				text_size: self.width,None
+				height : self.texture_size[1]
+				font_size : 20
+				size_hint:1,None
+		BoxLayout:
+			Button:
+				text: 'Close'
+				size_hint:(None,None)
+				size:100,90
+				on_release:
+					root.dismiss()
+			Label:
+				text:''
+				size:100,90
+			Button:
+				text: 'Clear History'
+				size_hint:(None,None)
+				size : 100,90
+				on_release:
+					root.text = ''
+					root.cehistory() if root.edtext=='e' else root.cdhistory()
+					
+<PP>:
+	title: 'History'
+	auto_dismiss : False
+	size_hint:(None,None)
+	size:(700,500)
+	BoxLayout:
+		orientation:'vertical'
+		BoxLayout:
+			orientation:'horizontal'
+			ScrollView:
+				Label:
+					text : root.etext
+					text_size: self.width,None
+					height : self.texture_size[1]
+					font_size : 20
+					size_hint:1,None
+			ScrollView:
+				Label:
+					text : root.dtext
+					text_size: self.width,None
+					height : self.texture_size[1]
+					font_size : 20
+					size_hint:1,None
+			
+		BoxLayout:
+			Button:
+				text: 'Clear\nEncoding\nHistory'
+				size_hint:(None,None)
+				size : 100,90
+				on_release:
+					root.etext = ''
+					root.cehistory()
+			Label:
+				text:''
+				size:50,90
+			Button:
+				text: 'Close'
+				size_hint:(None,None)
+				size:100,90
+				on_release:
+					root.dismiss()
+			Label:
+				text:''
+				size:50,90
+			Button:
+				text: 'Clear\nDecoding\nHistory'
+				size_hint:(None,None)
+				size : 100,90
+				on_release:
+					root.dtext = ''
+					root.cdhistory()
