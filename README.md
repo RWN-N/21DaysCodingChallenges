@@ -1,2 +1,2 @@
-# First Week 21DaysCodingChallenges
+#21DaysCodingChallenges
 Challenges From Discord Server
